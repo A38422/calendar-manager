@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="CustomMaterialCalendarView" parent="Widget.MaterialComponents.MaterialCalendar">
+<!--        <item name="headerLayout">@style/CustomDayTextAppearance</item>-->
+        <item name="android:headerBackground">@color/purple</item>
+    </style>
+
+    <style name="CustomDayTextAppearance" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="android:background">@color/customDayTextColor</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+</resources>

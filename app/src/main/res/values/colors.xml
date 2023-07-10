@@ -8,4 +8,6 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorPast">#CCCCCC</color>
     <color name="colorFuture">#000000</color>
+
+    <color name="customDayTextColor">#FF0000</color>
 </resources>
