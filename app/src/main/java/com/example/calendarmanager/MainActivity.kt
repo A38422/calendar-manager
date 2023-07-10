@@ -1,5 +1,6 @@
 package com.example.calendarmanager
 
+import android.content.Context
 import android.graphics.Color
 import android.graphics.Typeface
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,8 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.appcompat.app.AlertDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 import com.prolificinteractive.materialcalendarview.CalendarDay
 import com.prolificinteractive.materialcalendarview.CalendarMode
@@ -44,6 +47,8 @@ class MainActivity : AppCompatActivity() {
                 setCalendarDisplayModeMonths()
             }
         }
+
+        loadTaskList()
 
         setColorDate()
 
@@ -169,7 +174,7 @@ class MainActivity : AppCompatActivity() {
 
                 val editTextView = TextView(this)
                 editTextView.text = "Sửa"
-                editTextView.setTextColor(Color.parseColor("#800080")) // Màu tím
+                editTextView.setTextColor(Color.parseColor("#7E027E")) // Màu tím
                 val editTextViewParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -181,7 +186,7 @@ class MainActivity : AppCompatActivity() {
 
                 val deleteTextView = TextView(this)
                 deleteTextView.text = "Xóa"
-                deleteTextView.setTextColor(Color.parseColor("#800080")) // Màu tím
+                deleteTextView.setTextColor(Color.parseColor("#7E027E")) // Màu tím
                 val deleteTextViewParams = LinearLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT,
                     LinearLayout.LayoutParams.WRAP_CONTENT
@@ -195,6 +200,9 @@ class MainActivity : AppCompatActivity() {
 
                 checkBox.setOnCheckedChangeListener { _, isChecked ->
                     task.isDone = isChecked
+
+                    saveTaskList()
+
                     setColorDate()
                 }
 
@@ -215,6 +223,9 @@ class MainActivity : AppCompatActivity() {
                     val taskContent = editTextTaskContent.text.toString()
                     val selectedTask = tasks[selectedTaskIndex]
                     selectedTask.content = taskContent
+
+                    saveTaskList()
+
                     setColorDate()
                 }
             }
@@ -251,9 +262,30 @@ class MainActivity : AppCompatActivity() {
     private fun addTaskForDate(date: CalendarDay, newTask: Task) {
         newTask.date = date
         taskList.add(newTask)
+
+        saveTaskList()
     }
 
     private fun removeTaskForDate(date: CalendarDay, task: Task) {
         taskList.remove(task)
+
+        saveTaskList()
+    }
+
+    private fun saveTaskList() {
+        val sharedPreferences = getSharedPreferences("TaskListPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val json = gson.toJson(taskList)
+        editor.putString("taskList", json)
+        editor.apply()
+    }
+
+    private fun loadTaskList() {
+        val sharedPreferences = getSharedPreferences("TaskListPrefs", Context.MODE_PRIVATE)
+        val gson = Gson()
+        val json = sharedPreferences.getString("taskList", null)
+        val type = object : TypeToken<MutableList<Task>>() {}.type
+        taskList = gson.fromJson(json, type) ?: mutableListOf()
     }
 }
