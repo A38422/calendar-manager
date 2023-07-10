@@ -27,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var toggleButton: ToggleButton
 
     private var taskList = mutableListOf<Task>()
-    private var taskMap = HashMap<CalendarDay, MutableList<Task>>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val colorPast = resources.getColor(R.color.colorPast)
         val colorFuture = resources.getColor(R.color.colorFuture)
 
-        // Thiết lập trạng thái màu sắc cho ngày hôm nay
+        // Thiết lập màu sắc cho ngày hôm nay
         calendarView.addDecorator(object : DayViewDecorator {
             override fun shouldDecorate(day: CalendarDay): Boolean {
                 return day == CalendarDay.today()
@@ -92,7 +91,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Thiết lập trạng thái màu sắc cho ngày quá khứ
+        // Thiết lập màu sắc cho ngày quá khứ
         calendarView.addDecorator(object : DayViewDecorator {
             override fun shouldDecorate(day: CalendarDay): Boolean {
                 return day.isBefore(CalendarDay.today())
@@ -103,7 +102,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Thiết lập trạng thái màu sắc cho ngày tương lai
+        // Thiết lập màu sắc cho ngày tương lai
         calendarView.addDecorator(object : DayViewDecorator {
             override fun shouldDecorate(day: CalendarDay): Boolean {
                 return day.isAfter(CalendarDay.today())
@@ -114,7 +113,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Thiết lập trạng thái màu sắc cho ngày chưa hoàn thành
+        // Thiết lập màu sắc cho ngày chưa hoàn thành
         calendarView.addDecorator(object : DayViewDecorator {
             override fun shouldDecorate(day: CalendarDay): Boolean {
                 val tasks = getTasksForDate(day)
@@ -126,7 +125,7 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        // Thiết lập trạng thái màu sắc cho ngày đã hoàn thành
+        // Thiết lập màu sắc cho ngày đã hoàn thành
         calendarView.addDecorator(object : DayViewDecorator {
             override fun shouldDecorate(day: CalendarDay): Boolean {
                 val tasks = getTasksForDate(day)
@@ -149,7 +148,7 @@ class MainActivity : AppCompatActivity() {
         val editTextTaskContent = dialogView.findViewById<EditText>(R.id.editTextTaskContent)
         val checkboxLayout = dialogView.findViewById<LinearLayout>(R.id.checkboxLayout)
 
-        dialogBuilder.setTitle("Tasks")
+        dialogBuilder.setTitle("Danh sách công việc")
 
         if (tasks.isNotEmpty()) {
             var selectedTaskIndex = -1
@@ -211,7 +210,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            dialogBuilder.setNeutralButton("Sửa") { _, _ ->
+            dialogBuilder.setNeutralButton("Lưu") { _, _ ->
                 if (editTextTaskContent.text.toString().isNotEmpty()) {
                     val taskContent = editTextTaskContent.text.toString()
                     val selectedTask = tasks[selectedTaskIndex]
